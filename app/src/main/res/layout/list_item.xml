@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/flAlarmTimes"
+    android:padding="8dp">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="New Text"
+        android:id="@+id/tvAlarmTime"
+        android:layout_gravity="left"
+        android:paddingLeft="50dp"
+        android:textSize="30dp"
+        android:textIsSelectable="true"
+        android:textStyle="bold"
+        android:textColor="@color/colorType" />
+
+    <ImageButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/ibDeleteAlaram"
+        android:layout_gravity="right"
+        android:src="@drawable/ic_delete_24dp"
+        android:foregroundTint="@color/colorType" />
+
+</FrameLayout>
