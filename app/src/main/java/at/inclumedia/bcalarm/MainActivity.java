@@ -77,6 +77,9 @@ public class MainActivity extends AppCompatActivity implements TimeAdapter.DataS
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+            Intent prefsIntent = new Intent(getApplicationContext(), SettingsActivity.class);
+            startActivity(prefsIntent);
+
             return true;
         }
 

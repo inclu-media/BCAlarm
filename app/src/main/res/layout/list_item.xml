@@ -12,10 +12,9 @@
         android:text="New Text"
         android:id="@+id/tvAlarmTime"
         android:layout_gravity="left"
-        android:paddingLeft="50dp"
+        android:paddingLeft="16dp"
         android:textSize="30dp"
         android:textIsSelectable="true"
-        android:textStyle="bold"
         android:textColor="@color/colorType" />
 
     <ImageButton

@@ -10,10 +10,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.TimePicker;
 
-import com.orm.SugarRecord;
-
 import java.util.Calendar;
-import java.util.Date;
 
 public class TimeActivity extends AppCompatActivity {
 
@@ -35,8 +32,14 @@ public class TimeActivity extends AppCompatActivity {
 
     public void addNewTimeentry(View view) {
         Calendar now = Calendar.getInstance();
+        Calendar tmpNow = now;
         now.set(Calendar.HOUR_OF_DAY, mPicker.getCurrentHour());
         now.set(Calendar.MINUTE, mPicker.getCurrentMinute());
+
+        // alarm is in the past, push to tomorrow.
+        if (now.getTimeInMillis() <= Calendar.getInstance().getTimeInMillis()) {
+            now.add(Calendar.DATE, 1);
+        }
 
         Log.d(LOG_TAG, "Alarm set to: " + now.get(Calendar.HOUR_OF_DAY) + ":" + now.get(Calendar.MINUTE) + "->" + now.getTimeInMillis());
 

@@ -1,11 +1,13 @@
 package at.inclumedia.bcalarm;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.media.AudioManager;
 import android.media.SoundPool;
 import android.os.CountDownTimer;
 import android.os.Vibrator;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -20,16 +22,20 @@ public class AlarmActivity extends AppCompatActivity {
 
     private static final String LOG_TAG = AlarmActivity.class.getSimpleName();
     private static final int RING_TIME_SEC = 180; // 3 minutes
+    private static final String PREF_LEGACY = "pref_legacy";
 
     private SoundPool mSoundPool;
     private int mSoundNotificationId;
     private Vibrator mVibrator;
     private long[] mPattern = {300, 300, 300, 300, 300, 300};
     private CountDownTimer mTimer;
+    private SharedPreferences mPrefs;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        mPrefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
 
         // window mode
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN |
@@ -58,15 +64,35 @@ public class AlarmActivity extends AppCompatActivity {
     }
 
     /**
-     * Used to be in onStart()
-     * There is a chance, that CountDownTimer blocks onStart "partly" and prohibits
-     * the Activity from popping up on time. In onResume this problem should not be
-     * occurring.
+     * Fix attempt
      */
     @Override
     protected void onResume() {
         super.onResume();
 
+        if (!mPrefs.getBoolean(PREF_LEGACY, false)) {
+            Log.i(LOG_TAG, "Using updated code");
+            processTimer();
+        }
+    }
+
+    /**
+     * Legacy code
+     * There is a chance, that CountDownTimer blocks onStart "partly" and prohibits
+     * the Activity from popping up on time. In onResume this problem should not be
+     * occurring.
+     */
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        if (mPrefs.getBoolean(PREF_LEGACY, false)) {
+            Log.i(LOG_TAG, "Using legacy code");
+            processTimer();
+        }
+    }
+
+    private void processTimer() {
         mTimer = new CountDownTimer(RING_TIME_SEC * 1000, 1000) {
             private int seconds = 0;
 
